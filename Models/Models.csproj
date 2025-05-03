@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+	
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>dotnet-Model-de3b3e00-2027-4608-a224-263f9a1101b6</UserSecretsId>
+		<RootNamespace>Model</RootNamespace>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0"/>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Remove="Properties\launchSettings.json" />
+	</ItemGroup>
+</Project>

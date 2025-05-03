@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+	
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>dotnet-Application-08bc6e89-1dda-4d97-aa0a-158c5d2eb597</UserSecretsId>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="14.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0"/>
+		<PackageReference Include="OneOf" Version="3.0.271" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\Infrastracture\Infrastracture.csproj" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,9 @@
+namespace space_rovers.Models.User.Responses;
+
+public sealed record LoginUserResponse
+{
+	///<summary>
+	///Токен
+	///</summary>
+	public required string Token { get; init; }
+}
