@@ -1,4 +1,4 @@
-namespace Application.Models.Queries.User;
+namespace Application.Models.Queries.Folder;
 
 public sealed record PostFolderQuery
 {

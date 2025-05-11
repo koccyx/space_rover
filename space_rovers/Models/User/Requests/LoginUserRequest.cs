@@ -9,8 +9,9 @@ namespace space_rovers.Models.User.Requests;
 /// </summary>
 public sealed record LoginUserRequest
 {
-	[DataMember(Name = "login")] 
-	public required string Login { get; init; }
+	[DataMember(Name = "name")] 
+	public required string Name { get; init; }
+	
 	[DataMember(Name = "password")] 
 	public required string Password { get; init; }
 	
@@ -20,7 +21,7 @@ public sealed record LoginUserRequest
 
 		public Validator()
 		{
-			RuleFor(x => x.Login).NotNull();
+			RuleFor(x => x.Name).NotNull();
 			RuleFor(x => x.Password).NotNull();
 		} 
 	}

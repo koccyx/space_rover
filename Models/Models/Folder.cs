@@ -9,6 +9,10 @@ public class Folder : ICreatedAt
 	
 	public Guid CompanyId { get; set; }
 	
+	public Company Company { get; set; }
+	
+	public ICollection<File> Files { get; set; }
+	
 	public DateTimeOffset UpdatedAt { get; set; }
 	
 	public DateTimeOffset CreatedAt { get; set; }

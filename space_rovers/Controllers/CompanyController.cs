@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using Application.Models.Queries.Company;
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using space_rovers.Models.Company.Requests;
 using space_rovers.Models.Company.Responses;
@@ -18,12 +20,12 @@ public class CompanyController : ControllerBase
 		_companyService = companyService ?? throw new ArgumentNullException(nameof(companyService));
 	}
 
+	[Authorize]
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUsersResponse))]
 	public async Task<ActionResult<GetCompaniesResponse>> GetCompanies(GetCompaniesRequest request, CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);
-
 		var getCompaniesQuery = new GetCompaniesQuery() { };
 
 		var response = await _companyService.GetCompanies(getCompaniesQuery, cancellationToken);
@@ -35,19 +37,24 @@ public class CompanyController : ControllerBase
 		};
 	}
 
+	[Authorize]
 	[HttpPost]
-	public async Task<ActionResult<PostCompanyResponse>> PostCompanyByIdResponse(PostCompanyRequest request,
+	public async Task<ActionResult<PostCompanyResponse>> PostCompany(PostCompanyRequest request,
 		CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);
-
 		
+		var userIdClaim = User.FindFirst("userId").Value;
+		Guid.TryParse(userIdClaim, out var userId);
+
 		var postCompanyQuery = new PostCompanyQuery
 		{
 			Name = request.Company.Name,
 			StorageLimit = request.Company.StorageLimit,
-			UsedStorage = 0
+			UsedStorage = 0,
+			UserId = userId
 		};
+
 		var result = _companyService.PostCompany(postCompanyQuery, cancellationToken);
 
 		if (result.Result.IsT1)
@@ -60,9 +67,37 @@ public class CompanyController : ControllerBase
 			Company = result.Result.AsT0.Company
 		});
 	}
+	
+	[Authorize]
+	[HttpPatch("{id::guid}/add-user")]
+	public async Task<ActionResult<PatchUserToCompanyRequest>> PostCompany(PatchUserToCompanyRequest request,
+		CancellationToken cancellationToken)
+	{
+		ArgumentNullException.ThrowIfNull(request);
+		
+		var userIdClaim = User.FindFirst("userId").Value;
+		Guid.TryParse(userIdClaim, out var userId);
+
+		var addUserToCompanyQuery = new AddUserToCompanyQuery()
+		{
+			UserId = userId,
+			CompanyId = request.CompanyId
+		};
+
+		var result = _companyService.AddUserToCompany(addUserToCompanyQuery, cancellationToken);
+
+		if (result.Result.IsT1)
+		{
+			return result.Result.AsT1.ToObjectResult();
+		}
+
+		return Ok(new PatchUserToCompanyResponse()
+		{
+		});
+	}	
 
 	[HttpGet("{id::guid}")]
-	public async Task<ActionResult<GetCompanyByIdResponse>> GetCompanyByIdResponse(GetCompanyByIdRequest request,
+	public async Task<ActionResult<GetCompanyByIdResponse>> GetCompanyById(GetCompanyByIdRequest request,
 		CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);

@@ -111,6 +111,14 @@ public sealed class CompanyService : ICompanyService
 			};
 		}
 
+		var user = await _db.Users.Where(x => x.Id == query.UserId)
+			.SingleAsync(cancellationToken);
+		
+		if (user.CompanyId is not null)
+		{
+			return new UserHasCompanyBusinessError();
+		}
+
 		var company = new Model.Models.Company()
 		{
 			Name = query.Name,
@@ -119,10 +127,11 @@ public sealed class CompanyService : ICompanyService
 		};
 
 		await _db.Companies.AddAsync(company, cancellationToken);
+		user.CompanyId = company.Id;
+		
 		await _db.SaveChangesAsync(cancellationToken);
 		
 		var response = await GetCompanyById(new GetCompanyQuery {Id = company.Id}, cancellationToken);
-		Console.WriteLine(response.Value);
 		if (response.IsT0)
 		{
 			return new PostCompanyQueryResult()
@@ -133,4 +142,38 @@ public sealed class CompanyService : ICompanyService
 	
 		return response.AsT1;
 	}
+	
+	public async Task<OneOf<AddUserToCompanyQueryResult, BusinessError>> AddUserToCompany(AddUserToCompanyQuery query, CancellationToken cancellationToken)
+	{
+		ArgumentNullException.ThrowIfNull(query);
+		
+		if (!await _db.Companies.AnyAsync(x => x.Id == query.CompanyId, cancellationToken))
+		{
+			return new NotFounByIdBusinessError()
+			{
+				Id = query.CompanyId,
+				EntityName	= nameof(Application.Models.Company) 
+			};
+		}
+
+		var user = await _db.Users.Where(x => x.Id == query.UserId)
+			.SingleOrDefaultAsync(cancellationToken);
+		
+		if (user is null)
+		{
+			return new NotFounByIdBusinessError()
+			{
+				Id = query.UserId,
+				EntityName	= nameof(Application.Models.User) 
+			};
+		}
+
+		user.CompanyId = query.CompanyId;
+		
+		await _db.SaveChangesAsync(cancellationToken);
+		
+		return new AddUserToCompanyQueryResult()
+		{
+		};
+	}	
 }

@@ -11,4 +11,6 @@ public class Company
 	public float UsedStorage { get; set; }
 
 	public ICollection<User> Users { get; set; }
+	
+	public ICollection<Folder> Folders { get; set; }
 }

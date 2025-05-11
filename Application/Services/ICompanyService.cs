@@ -20,6 +20,11 @@ public interface ICompanyService
 	public Task<OneOf<GetCompanyQueryResult, BusinessError>> GetCompanyById(GetCompanyQuery query, CancellationToken cancellationToken);
 
 	/// <summary>
+	/// Добавление пользователя в компанию  
+	/// </summary>
+	public Task<OneOf<AddUserToCompanyQueryResult, BusinessError>> AddUserToCompany(AddUserToCompanyQuery query, CancellationToken cancellationToken);
+
+	/// <summary>
 	/// Создание компании  
 	/// </summary>
 	public Task<OneOf<PostCompanyQueryResult, BusinessError>> PostCompany(PostCompanyQuery query, CancellationToken cancellationToken);

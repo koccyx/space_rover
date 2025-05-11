@@ -7,4 +7,6 @@ public sealed record PostCompanyQuery
 	public float StorageLimit { get; init; }
 
 	public float UsedStorage { get; init; } = 0;
+	
+	public Guid UserId { get; set; }
 }

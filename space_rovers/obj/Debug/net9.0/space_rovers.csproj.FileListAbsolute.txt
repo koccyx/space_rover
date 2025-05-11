@@ -111,3 +111,4 @@
 /Users/koccyx/Desktop/me/space_rover/space_rovers/space_rovers/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /Users/koccyx/Desktop/me/space_rover/space_rovers/space_rovers/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
 /Users/koccyx/Desktop/me/space_rover/space_rovers/space_rovers/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/koccyx/Desktop/me/space_rover/space_rovers/space_rovers/obj/Debug/net9.0/space_rovers.sourcelink.json

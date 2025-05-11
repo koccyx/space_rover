@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text;
 using Amazon.Runtime;
 using Amazon.S3;
@@ -6,11 +5,9 @@ using Application.Interfaces;
 using Application.Services;
 using Application.Services.impl;
 using Application.utils.jwt;
-using AutoMapper;
 using Infrastracture;
 using Infrastracture.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -28,14 +25,29 @@ public class Program
 			x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 			x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-		}).AddJwtBearer(x =>
+		}).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, x =>
+		{
 			x.TokenValidationParameters = new TokenValidationParameters()
 			{
 				ValidateIssuer = false,
 				ValidateAudience = false,
-				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:SecretKey"] ?? throw new InvalidOperationException())) 
-			}
-		);
+				IssuerSigningKey =
+					new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:SecretKey"] ??
+					                                                throw new InvalidOperationException()))
+			};
+
+			x.Events = new JwtBearerEvents()
+			{
+				OnMessageReceived = context =>
+				{
+					var token = context.Request.Cookies["Authorization"]?.Split(" ")[1];
+					context.Token = token;
+					
+					return Task.CompletedTask;
+				}
+			};
+		});
+
 
 		builder.Services.AddOpenApi();
 
@@ -58,13 +70,14 @@ public class Program
 
 		builder.Services.AddAutoMapper(typeof(MappingProfile.MappingProfile));
 		builder.Services.AddScoped<IJwtProvider, JwtProvider>();
-		builder.Services.AddScoped<IPasswordHasher, PasswordHasher> ();
-		
+		builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
 		builder.Services.AddScoped<ICompanyService, CompanyService>();
 		builder.Services.AddScoped<IUserService, UserService>();
 		builder.Services.AddScoped<IFolderService, FolderService>();
+		builder.Services.AddScoped<IFileService, FileService>();
 		builder.Services.AddDbContext<ApplicationDbContext>();
-		
+
 		var app = builder.Build();
 
 		if (app.Environment.IsDevelopment())

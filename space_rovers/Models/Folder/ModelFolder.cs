@@ -10,9 +10,6 @@ public class ModelFolder
 	[DataMember(Name = "Name")]
 	public string Name { get; set; }
 	
-	[DataMember(Name = "UserId")]
-	public Guid UserId { get; set; }
-	
 	[DataMember(Name = "CompanyId")]
 	public Guid CompanyId { get; set; }
 	
@@ -21,7 +18,6 @@ public class ModelFolder
 		public Validator() 
 		{
 			RuleFor(x => x.Name).NotEmpty();
-			RuleFor(x => x.UserId).NotEmpty(); 
 			RuleFor(x => x.CompanyId).NotEmpty(); 
 		}
 	}

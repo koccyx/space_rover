@@ -39,13 +39,13 @@ public class UserController : ControllerBase
 	[HttpPost]
 	[Route("login")]
 	public async Task<ActionResult<LoginUserResponse>> LoginUser(LoginUserRequest request,
-		CancellationToken cancellationToken, HttpContext context)
+		CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);
 
 		var loginUserQuery = new LoginUserQuery()
 		{
-			Name = request.Login,
+			Name = request.Name,
 			Password = request.Password
 		};
 
@@ -56,7 +56,7 @@ public class UserController : ControllerBase
 			return result.Result.AsT1.ToObjectResult();
 		}
 
-		// context.Response.Cookies.Append("Authorization", result.Result.AsT0.Token);
+		Response.Cookies.Append("Authorization", $"Bearer {result.Result.AsT0.Token}");
 
 		return Ok(new LoginUserResponse()
 		{
@@ -67,7 +67,7 @@ public class UserController : ControllerBase
 	[HttpPost]
 	[Route("register")]
 	public async Task<ActionResult<RegisterUserResponse>> RegisterUser(RegisterUserRequest request,
-		CancellationToken cancellationToken, HttpContext context)
+		CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);
 
@@ -84,7 +84,9 @@ public class UserController : ControllerBase
 			return result.Result.AsT1.ToObjectResult();
 		}
 
-		// context.Response.Cookies.Append("Authorization", result.Result.AsT0.Token);
+		var cookie = "Bearer " + result.Result.AsT0.Token;
+
+		Response.Cookies.Append("Authorization", cookie); 
 		
 		return Ok(new RegisterUserResponse()
 		{

@@ -162,3 +162,4 @@
 /Users/koccyx/Desktop/me/space_rover/space_rovers/Infrastracture/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /Users/koccyx/Desktop/me/space_rover/space_rovers/Infrastracture/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /Users/koccyx/Desktop/me/space_rover/space_rovers/Infrastracture/bin/Debug/net9.0/BCrypt.Net-Next.dll
+/Users/koccyx/Desktop/me/space_rover/space_rovers/Infrastracture/obj/Debug/net9.0/Infrastracture.sourcelink.json

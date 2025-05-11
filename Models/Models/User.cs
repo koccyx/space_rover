@@ -8,5 +8,8 @@ public class User
 	
 	public string PasswordHash { get; set; }
 	
+	public ICollection<File> Files { get; set; }
 	public Guid? CompanyId { get; set; }
+	
+	public Company? Company { get; set; }
 }

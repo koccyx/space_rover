@@ -43,6 +43,50 @@ namespace Infrastracture.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("Model.Models.File", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("FolderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("FolderId1")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<float>("Size")
+                        .HasColumnType("real");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FolderId");
+
+                    b.HasIndex("FolderId1");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Files");
+                });
+
             modelBuilder.Entity("Model.Models.Folder", b =>
                 {
                     b.Property<Guid>("Id")
@@ -50,6 +94,9 @@ namespace Infrastracture.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CompanyId1")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -67,6 +114,10 @@ namespace Infrastracture.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CompanyId1");
+
                     b.ToTable("Folders");
                 });
 
@@ -77,6 +128,9 @@ namespace Infrastracture.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CompanyId1")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -91,19 +145,81 @@ namespace Infrastracture.Migrations
 
                     b.HasIndex("CompanyId");
 
+                    b.HasIndex("CompanyId1");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Model.Models.File", b =>
+                {
+                    b.HasOne("Model.Models.Folder", "Folder")
+                        .WithMany()
+                        .HasForeignKey("FolderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Model.Models.Folder", null)
+                        .WithMany("Files")
+                        .HasForeignKey("FolderId1");
+
+                    b.HasOne("Model.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Model.Models.User", null)
+                        .WithMany("Files")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Folder");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Model.Models.Folder", b =>
+                {
+                    b.HasOne("Model.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Model.Models.Company", null)
+                        .WithMany("Folders")
+                        .HasForeignKey("CompanyId1");
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Model.Models.User", b =>
                 {
+                    b.HasOne("Model.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
                     b.HasOne("Model.Models.Company", null)
                         .WithMany("Users")
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId1");
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Model.Models.Company", b =>
                 {
+                    b.Navigation("Folders");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Model.Models.Folder", b =>
+                {
+                    b.Navigation("Files");
+                });
+
+            modelBuilder.Entity("Model.Models.User", b =>
+                {
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

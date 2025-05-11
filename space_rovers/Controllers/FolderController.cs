@@ -2,6 +2,7 @@ using Application.Models.Queries.Folder;
 using Application.Models.Queries.User;
 using Application.Models.QueryResults.Folder;
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using space_rovers.Models.Companies.Requests.User;
 using space_rovers.Models.Folder.Requests;
@@ -17,7 +18,7 @@ public class FolderController : ControllerBase
 {
 	private readonly IFolderService _folderService;
 
-	public FolderController(IFolderService folderService)
+	public FolderController(IFolderService folderService, ICompanyService companyService)
 	{
 		_folderService = folderService ?? throw new ArgumentNullException(nameof(folderService));
 	}
@@ -42,18 +43,23 @@ public class FolderController : ControllerBase
 		};
 	}
 
+	[Authorize]
 	[HttpPost]
-	public async Task<ActionResult<PostFolderResponse>> PostFolderByIdResponse(PostFolderRequest request,
+	public async Task<ActionResult<PostFolderResponse>> PostFolder(PostFolderRequest request,
 		CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);
+
+		var userIdClaim = User.FindFirst("userId").Value;
+		Guid.TryParse(userIdClaim, out var userId);
 		
 		var postFolderQuery = new PostFolderQuery()
 		{
 			Name = request.Folder.Name,
 			CompanyId = request.Folder.CompanyId,
-			UserId = request.Folder.UserId
+			UserId = userId
 		};
+
 		var result = _folderService.PostFolder(postFolderQuery, cancellationToken);
 
 		if (result.Result.IsT1)
@@ -87,7 +93,7 @@ public class FolderController : ControllerBase
 
 		return Ok(new GetFolderByIdResponse()
 		{
-			Folder =  user.Result.AsT0.Folder
+			Folder = user.Result.AsT0.Folder
 		});
 	}
 }

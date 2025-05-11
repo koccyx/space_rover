@@ -53,8 +53,6 @@ public sealed class FolderService : IFolderService
 		var folders = companyQuery
 			.Where(x => x.CompanyId == query.CompanyId);
 		
-		Console.WriteLine(companyQuery.ToList()[0].CompanyId);
-		Console.WriteLine(query.CompanyId);
 		var totalCount = await folders.CountAsync(cancellationToken);
 
 		if (totalCount == 0)
@@ -90,6 +88,15 @@ public sealed class FolderService : IFolderService
 			{
 				Id = existingFolder.Id,
 				Name = existingFolder.Name
+			};
+		}
+
+		if (!await _db.Companies.Where(x => x.Id == query.CompanyId).AnyAsync(cancellationToken))
+		{
+			return new NotFounByIdBusinessError()
+			{
+				Id = query.CompanyId,
+				EntityName = nameof(Application.Models.Company)
 			};
 		}
 
