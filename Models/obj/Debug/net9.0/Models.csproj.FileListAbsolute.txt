@@ -45,3 +45,4 @@
 /Users/koccyx/Desktop/me/space_rover/space_rovers/Models/obj/Debug/net9.0/Models.genruntimeconfig.cache
 /Users/koccyx/Desktop/me/space_rover/space_rovers/Models/obj/Debug/net9.0/ref/Models.dll
 /Users/koccyx/Desktop/me/space_rover/space_rovers/Models/obj/Debug/net9.0/Models.sourcelink.json
+/Users/koccyx/Desktop/me/space_rover/space_rovers/Models/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.Abstractions.dll

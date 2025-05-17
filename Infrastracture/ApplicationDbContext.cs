@@ -16,6 +16,8 @@ public class ApplicationDbContext : DbContext
 	public Microsoft.EntityFrameworkCore.DbSet<Folder> Folders { get; set; } = default!;
 	public Microsoft.EntityFrameworkCore.DbSet<Model.Models.File> Files { get; set; } = default!;
 	
+	public Microsoft.EntityFrameworkCore.DbSet<Model.Models.FileDetailsView> FileDetailsViews { get; set; } = default!;
+	
 	public ApplicationDbContext() : base()
 	{
 		Database.EnsureCreated();
@@ -23,11 +25,7 @@ public class ApplicationDbContext : DbContext
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		// modelBuilder.ApplyConfiguration(new CompanyConfiguration());
-		// modelBuilder.ApplyConfiguration(new FileConfiguration());
-		// modelBuilder.ApplyConfiguration(new FolderConfiguration());
-		// modelBuilder.ApplyConfiguration(new UserConfiguration());
-		modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());	
+		modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 	}
 	
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

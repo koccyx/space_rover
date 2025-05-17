@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Application.Models.Queries.Company;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -80,7 +79,7 @@ public class CompanyController : ControllerBase
 
 		var addUserToCompanyQuery = new AddUserToCompanyQuery()
 		{
-			UserId = userId,
+			UserId = request.User.UserId,
 			CompanyId = request.CompanyId
 		};
 

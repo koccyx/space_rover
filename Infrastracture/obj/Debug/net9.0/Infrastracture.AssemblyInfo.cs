@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Infrastracture")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34569bd1e8e2f3b07c0fdbab023bde6117377919")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b96cd6c854e23c85cf3c45a57ad2db6475f6e18")]
 [assembly: System.Reflection.AssemblyProductAttribute("Infrastracture")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Infrastracture")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

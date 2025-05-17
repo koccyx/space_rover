@@ -76,6 +76,7 @@ public class Program
 		builder.Services.AddScoped<IUserService, UserService>();
 		builder.Services.AddScoped<IFolderService, FolderService>();
 		builder.Services.AddScoped<IFileService, FileService>();
+		builder.Services.AddScoped<IStatisticsService, StatisticService>();
 		builder.Services.AddDbContext<ApplicationDbContext>();
 
 		var app = builder.Build();

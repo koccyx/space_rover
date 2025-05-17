@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nn8ZVULTlm8=",
+  "dgSpecHash": "xoO+lhbrj3E=",
   "success": true,
   "projectFilePath": "/Users/koccyx/Desktop/me/space_rover/space_rovers/space_rovers/space_rovers.csproj",
   "expectedPackageFiles": [
@@ -64,12 +64,12 @@
     "/Users/koccyx/.nuget/packages/microsoft.entityframeworkcore/9.0.3/microsoft.entityframeworkcore.9.0.3.nupkg.sha512",
     "/Users/koccyx/.nuget/packages/microsoft.entityframeworkcore.abstractions/9.0.3/microsoft.entityframeworkcore.abstractions.9.0.3.nupkg.sha512",
     "/Users/koccyx/.nuget/packages/microsoft.entityframeworkcore.analyzers/9.0.3/microsoft.entityframeworkcore.analyzers.9.0.3.nupkg.sha512",
-    "/Users/koccyx/.nuget/packages/microsoft.entityframeworkcore.relational/9.0.1/microsoft.entityframeworkcore.relational.9.0.1.nupkg.sha512",
+    "/Users/koccyx/.nuget/packages/microsoft.entityframeworkcore.relational/9.0.3/microsoft.entityframeworkcore.relational.9.0.3.nupkg.sha512",
     "/Users/koccyx/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "/Users/koccyx/.nuget/packages/microsoft.extensions.caching.abstractions/9.0.3/microsoft.extensions.caching.abstractions.9.0.3.nupkg.sha512",
     "/Users/koccyx/.nuget/packages/microsoft.extensions.caching.memory/9.0.3/microsoft.extensions.caching.memory.9.0.3.nupkg.sha512",
     "/Users/koccyx/.nuget/packages/microsoft.extensions.configuration/9.0.0/microsoft.extensions.configuration.9.0.0.nupkg.sha512",
-    "/Users/koccyx/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.1/microsoft.extensions.configuration.abstractions.9.0.1.nupkg.sha512",
+    "/Users/koccyx/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.3/microsoft.extensions.configuration.abstractions.9.0.3.nupkg.sha512",
     "/Users/koccyx/.nuget/packages/microsoft.extensions.configuration.binder/9.0.0/microsoft.extensions.configuration.binder.9.0.0.nupkg.sha512",
     "/Users/koccyx/.nuget/packages/microsoft.extensions.configuration.commandline/9.0.0/microsoft.extensions.configuration.commandline.9.0.0.nupkg.sha512",
     "/Users/koccyx/.nuget/packages/microsoft.extensions.configuration.environmentvariables/9.0.0/microsoft.extensions.configuration.environmentvariables.9.0.0.nupkg.sha512",

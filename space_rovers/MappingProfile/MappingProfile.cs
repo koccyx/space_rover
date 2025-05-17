@@ -13,5 +13,6 @@ public class MappingProfile : Profile
 		CreateMap<User, Application.Models.User>();
 		CreateMap<Folder, Application.Models.Folder>();
 		CreateMap<File, Application.Models.File>();
+		CreateMap<FileDetailsView, Application.Models.FileDetails>();
 	}
 }

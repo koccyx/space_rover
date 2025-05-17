@@ -60,7 +60,6 @@ public class FileController : ControllerBase
 			Size = request.File.Size
 		};
 		
-		
 		var result = _fileService.PostFile(postFileQuery, cancellationToken);
 
 		if (result.Result.IsT1)

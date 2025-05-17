@@ -64,7 +64,7 @@ public sealed class FolderService : IFolderService
 			};
 		}
 
-		var foldersList = await companyQuery.ToListAsync();
+		var foldersList = await folders.ToListAsync();
 		
 		var mappedFolders = _mapper.Map<Application.Models.Folder[]>(foldersList);
 

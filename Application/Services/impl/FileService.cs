@@ -65,7 +65,7 @@ public sealed class FileService : IFileService
 			};
 		}
 
-		var filesList = await fileQuery.ToListAsync();
+		var filesList = await files.ToListAsync();
 
 		var mappedFiles = _mapper.Map<Application.Models.File[]>(filesList);
 
@@ -83,7 +83,7 @@ public sealed class FileService : IFileService
 		var existingFile =
 			await _db.Files.SingleOrDefaultAsync(x => x.Name == query.Name && x.FolderId == query.FolderId, cancellationToken);
 
-		if (existingFile != null)
+		if (existingFile is not null)
 		{
 			return new CompanyDuplicationBusinessError()
 			{
@@ -104,13 +104,13 @@ public sealed class FileService : IFileService
 			.Where(f => f.Id == file.FolderId)
 			.Select(f => f.Company)
 			.SingleOrDefaultAsync(cancellationToken);
-
+		
 		if (company is null)
 		{
 			return new NotFounByIdBusinessError()
 			{
 				EntityName = nameof(Application.Models.Company),
-				Id = file.Id
+				Id = Guid.Empty
 			};
 		}
 		

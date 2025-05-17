@@ -11,5 +11,10 @@ public sealed record PatchUserToCompanyRequest
 	public required Guid CompanyId { get; init; }
 	
 	[FromBody]
-	public required Guid User { get; init; }
+	public required User User { get; init; }
+}
+
+public sealed record User
+{
+		public required Guid UserId { get; init; }
 }
