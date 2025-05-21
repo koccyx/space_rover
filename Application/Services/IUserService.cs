@@ -30,4 +30,9 @@ public interface IUserService
 	/// Логин пользователя 
 	/// </summary>
 	public Task<OneOf<LoginUserQueryResult, BusinessError>> LoginUser(LoginUserQuery query, CancellationToken cancellationToken);
+	
+	/// <summary>
+	/// Получение компании пользователя 
+	/// </summary>
+	public Task<OneOf<GetUserCompanyQueryResult, BusinessError>> GetUserCompany(GetUserCompanyQuery query, CancellationToken cancellationToken);
 }

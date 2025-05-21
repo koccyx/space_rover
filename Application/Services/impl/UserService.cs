@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Application.Models;
 using Application.Models.Common;
 using Application.Models.BusinessErrors;
 using Application.Models.Queries;
@@ -126,6 +127,35 @@ public sealed class UserService : IUserService
 		};
 	}
 
+	public async Task<OneOf<GetUserCompanyQueryResult, BusinessError>> GetUserCompany(GetUserCompanyQuery query,
+		CancellationToken cancellationToken)
+	{
+		ArgumentNullException.ThrowIfNull(query);
+
+		var usersCompanies =  _db.Companies.Join(_db.Users,
+			c => c.Id,
+			u => u.CompanyId,
+			(c, u) => new { c, u });
+
+		var company = await usersCompanies.Where(cu => cu.u.Id == query.UserId).Select(cu => cu.c).SingleOrDefaultAsync(cancellationToken);
+
+		if (company is null)
+		{
+			return new NotFounByIdBusinessError()
+			{
+				Id = query.UserId,
+				EntityName = nameof(Application.Models.Company)
+			};
+		}
+
+		var mappedCompany = _mapper.Map<Application.Models.Company>(company);
+
+		return new GetUserCompanyQueryResult()
+		{
+			Company = mappedCompany
+		};	
+	}
+	
 	public async Task<OneOf<LoginUserQueryResult, BusinessError>> LoginUser(LoginUserQuery query, CancellationToken cancellationToken)
 	{
 		var existingUser = await _db.Users.SingleOrDefaultAsync(x => x.Name == query.Name);

@@ -87,6 +87,36 @@ namespace Infrastracture.Migrations
                     b.ToTable("Files");
                 });
 
+            modelBuilder.Entity("Model.Models.FileDetailsView", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OwnerName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Size")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("FileDetailsView", (string)null);
+                });
+
             modelBuilder.Entity("Model.Models.Folder", b =>
                 {
                     b.Property<Guid>("Id")
@@ -148,6 +178,26 @@ namespace Infrastracture.Migrations
                     b.HasIndex("CompanyId1");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Model.Models.UserFileView", b =>
+                {
+                    b.Property<int>("FileCount")
+                        .HasColumnType("integer");
+
+                    b.Property<float>("TotalSize")
+                        .HasColumnType("real");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("UserFileStatsView", (string)null);
                 });
 
             modelBuilder.Entity("Model.Models.File", b =>

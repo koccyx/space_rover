@@ -15,9 +15,12 @@ public class ApplicationDbContext : DbContext
 	public Microsoft.EntityFrameworkCore.DbSet<User> Users { get; set; } = default!;
 	public Microsoft.EntityFrameworkCore.DbSet<Folder> Folders { get; set; } = default!;
 	public Microsoft.EntityFrameworkCore.DbSet<Model.Models.File> Files { get; set; } = default!;
-	
 	public Microsoft.EntityFrameworkCore.DbSet<Model.Models.FileDetailsView> FileDetailsViews { get; set; } = default!;
+	public Microsoft.EntityFrameworkCore.DbSet<Model.Models.UserFileView> UserFileViews { get; set; } = default!;
 	
+
+	[Microsoft.EntityFrameworkCore.DbFunction("get_percents_of_used_storage", "public")]
+	public IQueryable<UsedStorageStatistics> GetCompanyStorageStatistics(Guid companyId) => throw new Exception("Method not supported");
 	public ApplicationDbContext() : base()
 	{
 		Database.EnsureCreated();
@@ -26,6 +29,9 @@ public class ApplicationDbContext : DbContext
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+		
+		modelBuilder.Entity<UsedStorageStatistics>().HasNoKey();	
+		modelBuilder.Entity<UploadsByDayStatistics>().HasNoKey();	
 	}
 	
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,6 +1,5 @@
 using AutoMapper;
 using Model.Models;
-using space_rovers.Models.User;
 using File = Model.Models.File;
 
 namespace space_rovers.MappingProfile;
@@ -14,5 +13,8 @@ public class MappingProfile : Profile
 		CreateMap<Folder, Application.Models.Folder>();
 		CreateMap<File, Application.Models.File>();
 		CreateMap<FileDetailsView, Application.Models.FileDetails>();
+		CreateMap<UserFileView, Application.Models.UserUploads>();
+		CreateMap<UsedStorageStatistics, Application.Models.CompanyStorageStatistics>();
+		CreateMap<UploadsByDayStatistics, Application.Models.UploadsByDayStatistics>();
 	}
 }

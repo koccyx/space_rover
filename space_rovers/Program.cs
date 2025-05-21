@@ -47,7 +47,17 @@ public class Program
 				}
 			};
 		});
-
+		
+		builder.Services.AddCors(options =>
+		{
+			options.AddPolicy("AllowFrontend", policy =>
+			{
+				policy.WithOrigins("http://localhost:3000") // frontend origin (Nuxt default)
+					.AllowAnyHeader()
+					.AllowAnyMethod()
+					.AllowCredentials(); // for cookies
+			});
+		});
 
 		builder.Services.AddOpenApi();
 
@@ -86,7 +96,8 @@ public class Program
 			app.MapOpenApi();
 			app.UseSwaggerUI(options => { options.SwaggerEndpoint("/openapi/v1.json", "Demo Api"); });
 		}
-
+		
+		app.UseCors("AllowFrontend");
 		app.UseHttpsRedirection();
 
 		app.UseAuthorization();

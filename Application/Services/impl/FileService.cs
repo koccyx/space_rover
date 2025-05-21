@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
 using Application.Models.Common;
 using Application.Models.BusinessErrors;
 using Application.Models.Queries.File;
@@ -6,7 +5,7 @@ using Application.Models.QueryResults.File;
 using AutoMapper;
 using Infrastracture;
 using Microsoft.EntityFrameworkCore;
-using Model.Models;
+using Npgsql;
 using OneOf;
 
 namespace Application.Services.impl;
@@ -99,12 +98,12 @@ public sealed class FileService : IFileService
 			FolderId = query.FolderId,
 			Size = query.Size
 		};
-		
+
 		var company = await _db.Folders
 			.Where(f => f.Id == file.FolderId)
 			.Select(f => f.Company)
 			.SingleOrDefaultAsync(cancellationToken);
-		
+
 		if (company is null)
 		{
 			return new NotFounByIdBusinessError()
@@ -113,19 +112,30 @@ public sealed class FileService : IFileService
 				Id = Guid.Empty
 			};
 		}
-		
-		if (company.UsedStorage + file.Size > company.StorageLimit)
+
+		// if (company.UsedStorage + file.Size > company.StorageLimit)
+		// {
+		// 	return new FileSizeError()
+		// 	{
+		// 		MaxFileSize = company.StorageLimit - company.UsedStorage
+		// 	};
+		// }
+		//
+		// company.UsedStorage += file.Size;
+		try
+		{
+			await _db.Files.AddAsync(file, cancellationToken);
+			await _db.SaveChangesAsync(cancellationToken);
+		}
+		catch (DbUpdateException dbEx) when (dbEx.InnerException is PostgresException pgEx)
 		{
 			return new FileSizeError()
 			{
 				MaxFileSize = company.StorageLimit - company.UsedStorage
 			};
+
+			throw;
 		}
-
-		company.UsedStorage += file.Size;
-		await _db.Files.AddAsync(file, cancellationToken);
-
-		await _db.SaveChangesAsync(cancellationToken);
 
 		var response = await GetFileById(new GetFileQuery() { Id = file.Id }, cancellationToken);
 		if (response.IsT0)
