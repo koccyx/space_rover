@@ -26,14 +26,31 @@ public class StatisticsController : ControllerBase
 
 	[HttpGet("file-details")]
 	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetFileDetailsStatisticsResponse))]
-	public async Task<ActionResult<GetFileDetailsStatisticsResponse>> GetFileDetailsStatistic(GetFileDetailsStatisticsRequest request,
+	public async Task<ActionResult<GetFileDetailsStatisticsResponse>> GetFileDetailsStatistic([FromQuery]GetFileDetailsStatisticsRequest request,
 		CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);
+		
+		var userIdClaim = User.FindFirst("userId").Value;
+		Guid.TryParse(userIdClaim, out var userId);
+
+		var getUserCompanyQuery = new GetUserCompanyQuery()
+		{
+			UserId = userId
+		};
+
+		var userCompany = await _userService.GetUserCompany(getUserCompanyQuery, cancellationToken);
+		
+		if (userCompany.IsT1)
+		{
+			return userCompany.AsT1.ToObjectResult();
+		}	
+
+
 
 		var getFileDetailsQuery = new GetFileDetailsQuery()
 		{
-			CompanyId = request.CompanyId
+			CompanyId = userCompany.AsT0.Company.Id
 		};
 
 		var response = await _statisticsService.GetFileDetails(getFileDetailsQuery, cancellationToken);

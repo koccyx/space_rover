@@ -156,6 +156,9 @@ public sealed class CompanyService : ICompanyService
 			};
 		}
 
+
+		Console.WriteLine(query.CompanyId.ToString());
+		Console.WriteLine(query.UserId.ToString());
 		var user = await _db.Users.Where(x => x.Id == query.UserId)
 			.SingleOrDefaultAsync(cancellationToken);
 		

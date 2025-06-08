@@ -25,9 +25,9 @@
     <PkgMicrosoft_AspNetCore_Razor_Design Condition=" '$(PkgMicrosoft_AspNetCore_Razor_Design)' == '' ">/Users/koccyx/.nuget/packages/microsoft.aspnetcore.razor.design/2.3.0</PkgMicrosoft_AspNetCore_Razor_Design>
     <PkgEntityFramework Condition=" '$(PkgEntityFramework)' == '' ">/Users/koccyx/.nuget/packages/entityframework/6.5.1</PkgEntityFramework>
     <PkgAWSSDK_Core Condition=" '$(PkgAWSSDK_Core)' == '' ">/Users/koccyx/.nuget/packages/awssdk.core/4.0.0-preview.10</PkgAWSSDK_Core>
+    <PkgAWSSDK_S3 Condition=" '$(PkgAWSSDK_S3)' == '' ">/Users/koccyx/.nuget/packages/awssdk.s3/4.0.0-preview.10</PkgAWSSDK_S3>
     <PkgAWSSDK_SSOOIDC Condition=" '$(PkgAWSSDK_SSOOIDC)' == '' ">/Users/koccyx/.nuget/packages/awssdk.ssooidc/4.0.0-preview.10</PkgAWSSDK_SSOOIDC>
     <PkgAWSSDK_SSO Condition=" '$(PkgAWSSDK_SSO)' == '' ">/Users/koccyx/.nuget/packages/awssdk.sso/4.0.0-preview.10</PkgAWSSDK_SSO>
     <PkgAWSSDK_SecurityToken Condition=" '$(PkgAWSSDK_SecurityToken)' == '' ">/Users/koccyx/.nuget/packages/awssdk.securitytoken/4.0.0-preview.10</PkgAWSSDK_SecurityToken>
-    <PkgAWSSDK_S3 Condition=" '$(PkgAWSSDK_S3)' == '' ">/Users/koccyx/.nuget/packages/awssdk.s3/4.0.0-preview.10</PkgAWSSDK_S3>
   </PropertyGroup>
 </Project>

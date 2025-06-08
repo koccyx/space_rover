@@ -45,7 +45,7 @@ public class FileController : ControllerBase
 
 	[Authorize]
 	[HttpPost]
-	public async Task<ActionResult<PostFileResponse>> PostFileById(PostFileRequest request,
+	public async Task<ActionResult<PostFileResponse>> PostFile(PostFileRequest request,
 		CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);
@@ -58,7 +58,7 @@ public class FileController : ControllerBase
 		{
 			UserId = userId
 		};
-		
+
 		var userCompany = await _userService.GetUserCompany(getUserCompanyQuery, cancellationToken);
 
 		if (userCompany.IsT1)
@@ -66,13 +66,16 @@ public class FileController : ControllerBase
 			return userCompany.AsT1.ToObjectResult();
 		}
 
+		Console.WriteLine(request.File.Length);
+
 		var postFileQuery = new PostFileQuery()
 		{
-			Name = request.File.Name,
+			File = request.File,
+			Name = request.File.FileName,
 			CompanyId = userCompany.AsT0.Company.Id,
 			UserId = userId,
-			FolderId = request.File.FolderId,
-			Size = request.File.Size
+			FolderId = request.FolderId,
+			Size = request.File.Length / 10000
 		};
 
 		var result = _fileService.PostFile(postFileQuery, cancellationToken);
@@ -89,7 +92,7 @@ public class FileController : ControllerBase
 	}
 
 	[HttpGet("{id::guid}")]
-	public async Task<ActionResult<GetFileByIdResponse>> GetFileById(GetFolderByIdRequest request,
+	public async Task<ActionResult<GetFileByIdResponse>> GetFileById(GetFileByIdRequest request,
 		CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);
@@ -99,16 +102,29 @@ public class FileController : ControllerBase
 			Id = request.Id
 		};
 
-		var user = _fileService.GetFileById(query, cancellationToken);
+		var file = _fileService.GetFileById(query, cancellationToken);
 
-		if (user.Result.IsT1)
+		if (file.Result.IsT1)
 		{
-			return user.Result.AsT1.ToObjectResult();
+			return file.Result.AsT1.ToObjectResult();
 		}
 
 		return Ok(new GetFileByIdResponse()
 		{
-			File = user.Result.AsT0.File
+			File = file.Result.AsT0.File
 		});
+	}
+
+	[HttpGet("pure/{id::guid}")]
+	public async Task<IActionResult> GetFile(GetPureFileByIdRequest request, CancellationToken cancellationToken)
+	{
+		var file = await _fileService.GetPureFileById(new GetPureFileQuery() { Id = request.Id }, cancellationToken);
+
+		if (file.IsT1)
+		{
+			return file.AsT1.ToObjectResult();
+		}
+
+		return File(file.AsT0.FileStream, file.AsT0.ContentType);
 	}
 }

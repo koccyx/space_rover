@@ -1925,8 +1925,10 @@
       },
       "Infrastracture/1.0.0": {
         "dependencies": {
+          "AWSSDK.S3": "4.0.0-preview.10",
           "BCrypt.Net-Next": "4.0.3",
           "EntityFramework": "6.5.1",
+          "Microsoft.AspNetCore.Mvc": "2.3.0",
           "Microsoft.EntityFrameworkCore": "9.0.3",
           "Microsoft.EntityFrameworkCore.Relational": "9.0.3",
           "Microsoft.Extensions.Hosting": "9.0.0",

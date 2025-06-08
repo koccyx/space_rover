@@ -117,4 +117,28 @@ public class UserController : ControllerBase
 			User = user.Result.AsT0.User
 		});
 	}
+	
+	[HttpGet("{id::guid}/company")]
+	public async Task<ActionResult<GetCompanyByUserIdResponse>> GetCompanyByUserId(GetCompanyByUserIdRequest request,
+		CancellationToken cancellationToken)
+	{
+		ArgumentNullException.ThrowIfNull(request);
+
+		var query = new GetUserCompanyQuery()
+		{
+			UserId = request.Id
+		};
+
+		var company = _userService.GetUserCompany(query, cancellationToken);
+
+		if (company.Result.IsT1)
+		{
+			return company.Result.AsT1.ToObjectResult();
+		}
+
+		return Ok(new GetCompanyByUserIdResponse()
+		{
+			Company = company.Result.AsT0.Company
+		});
+	}
 }

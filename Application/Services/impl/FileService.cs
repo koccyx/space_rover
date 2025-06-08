@@ -4,6 +4,7 @@ using Application.Models.Queries.File;
 using Application.Models.QueryResults.File;
 using AutoMapper;
 using Infrastracture;
+using Infrastracture.S3;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using OneOf;
@@ -13,12 +14,52 @@ namespace Application.Services.impl;
 public sealed class FileService : IFileService
 {
 	private readonly ApplicationDbContext _db;
+	private readonly S3Repository _s3;
 	public readonly IMapper _mapper;
 
-	public FileService(ApplicationDbContext db, IMapper mapper)
+	public FileService(ApplicationDbContext db, IMapper mapper, S3Repository s3)
 	{
 		_db = db ?? throw new ArgumentException(nameof(db));
 		_mapper = mapper ?? throw new ArgumentException(nameof(_mapper));
+		_s3 = s3 ?? throw new ArgumentException(nameof(s3));
+	}
+
+	public async Task<OneOf<GetPureFileQueryResult, BusinessError>> GetPureFileById(GetPureFileQuery query,
+		CancellationToken cancellationToken)
+	{
+		ArgumentNullException.ThrowIfNull(query);
+
+		var exists = await _db.Files.AnyAsync(x => x.Id == query.Id, cancellationToken);
+
+		if (!exists)
+		{
+			return new NotFounByIdBusinessError()
+			{
+				Id = query.Id,
+				EntityName = nameof(Application.Models.File)
+			};
+		}
+
+		try
+		{
+			var file = await _s3.GetFile(query.Id);
+
+			return new GetPureFileQueryResult()
+			{
+				FileStream = file.FileStream,
+				ContentType = file.ContentType
+			};
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+
+			return new NotFounByIdBusinessError()
+			{
+				Id = query.Id,
+				EntityName = nameof(Application.Models.File)
+			};
+		}
 	}
 
 	public async Task<OneOf<GetFileQueryResult, BusinessError>> GetFileById(GetFileQuery query, CancellationToken cancellationToken)
@@ -93,6 +134,7 @@ public sealed class FileService : IFileService
 
 		var file = new Model.Models.File()
 		{
+			Id = Guid.NewGuid(),
 			Name = query.Name,
 			UserId = query.UserId,
 			FolderId = query.FolderId,
@@ -122,13 +164,17 @@ public sealed class FileService : IFileService
 		// }
 		//
 		// company.UsedStorage += file.Size;
+
+
 		try
 		{
 			await _db.Files.AddAsync(file, cancellationToken);
+			await _s3.AddImage(query.File, file.Id);
 			await _db.SaveChangesAsync(cancellationToken);
 		}
 		catch (DbUpdateException dbEx) when (dbEx.InnerException is PostgresException pgEx)
 		{
+			Console.WriteLine("LIMIT");
 			return new FileSizeError()
 			{
 				MaxFileSize = company.StorageLimit - company.UsedStorage

@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +41,7 @@ public class HomeController : Controller
 				["filename"] = file.FileName
 			}
 		};
-
+		
 		await _s3Client.PutObjectAsync(putReq);
 
 		return Ok(key);

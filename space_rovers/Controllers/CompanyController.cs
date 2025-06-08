@@ -1,4 +1,5 @@
 using Application.Models.Queries.Company;
+using Application.Models.Queries.User;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace space_rovers.Controllers;
 public class CompanyController : ControllerBase
 {
 	private readonly ICompanyService _companyService;
+	private readonly IUserService _userService;
 
-	public CompanyController(ICompanyService companyService)
+	public CompanyController(ICompanyService companyService, IUserService userService)
 	{
 		_companyService = companyService ?? throw new ArgumentNullException(nameof(companyService));
+		_userService = userService ?? throw new ArgumentNullException(nameof(userService));
 	}
 
 	[Authorize]
@@ -68,25 +71,38 @@ public class CompanyController : ControllerBase
 	}
 	
 	[Authorize]
-	[HttpPatch("{id::guid}/add-user")]
-	public async Task<ActionResult<PatchUserToCompanyRequest>> PostCompany(PatchUserToCompanyRequest request,
+	[HttpPatch("{userId::guid}/add-user")]
+	public async Task<ActionResult<PatchUserToCompanyRequest>> AddUser(PatchUserToCompanyRequest request,
 		CancellationToken cancellationToken)
 	{
 		ArgumentNullException.ThrowIfNull(request);
 		
 		var userIdClaim = User.FindFirst("userId").Value;
 		Guid.TryParse(userIdClaim, out var userId);
+		
+		var getUserCompanyQuery = new GetUserCompanyQuery()
+		{
+			UserId = userId
+		};
+
+		var userCompany = await _userService.GetUserCompany(getUserCompanyQuery, cancellationToken);
+		
+		if (userCompany.IsT1)
+		{
+			return userCompany.AsT1.ToObjectResult();
+		}
 
 		var addUserToCompanyQuery = new AddUserToCompanyQuery()
 		{
-			UserId = request.User.UserId,
-			CompanyId = request.CompanyId
+			UserId = request.UserId,
+			CompanyId = userCompany.AsT0.Company.Id
 		};
 
 		var result = _companyService.AddUserToCompany(addUserToCompanyQuery, cancellationToken);
 
 		if (result.Result.IsT1)
 		{
+			
 			return result.Result.AsT1.ToObjectResult();
 		}
 

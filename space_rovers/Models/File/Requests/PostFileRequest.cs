@@ -10,12 +10,17 @@ namespace space_rovers.Models.File.Requests;
 /// </summary>
 public sealed record PostFileRequest
 {
-	[FromBody] 
-	public required ModelFile File { get; init; }
+	[FromForm] 
+	public required Guid FolderId { get; init; }
 	
+	[FromForm]
+	public required IFormFile File { get; set; }	
 	public sealed class Validator : AbstractValidator<PostFileRequest>
     	{
-    		/// <inheritdoc />
-    		public Validator() => RuleFor(x => x.File).NotNull().SetValidator(new ModelFile.Validator());
+		    public Validator() 
+		    {
+			    RuleFor(x => x.FolderId).NotEmpty();
+			    RuleFor(x => x.File).NotNull();
+		    }
     	}
 }

@@ -6,8 +6,10 @@ using Application.Services;
 using Application.Services.impl;
 using Application.utils.jwt;
 using Infrastracture;
+using Infrastracture.S3;
 using Infrastracture.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,6 +20,13 @@ public class Program
 	public static void Main(string[] args)
 	{
 		var builder = WebApplication.CreateBuilder(args);
+		
+		builder.Services.Configure<FormOptions>(options =>
+		{
+			options.ValueCountLimit = int.MaxValue;
+		});
+
+		
 		builder.Services.AddControllers();
 		builder.Services.AddAuthorization();
 		builder.Services.AddAuthentication(x =>
@@ -74,7 +83,6 @@ public class Program
 
 			var credentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey);
 
-
 			return new AmazonS3Client(credentials, config);
 		});
 
@@ -87,6 +95,7 @@ public class Program
 		builder.Services.AddScoped<IFolderService, FolderService>();
 		builder.Services.AddScoped<IFileService, FileService>();
 		builder.Services.AddScoped<IStatisticsService, StatisticService>();
+		builder.Services.AddScoped<S3Repository>();
 		builder.Services.AddDbContext<ApplicationDbContext>();
 
 		var app = builder.Build();

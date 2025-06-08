@@ -25,6 +25,8 @@ public interface IFileService
 	/// </summary>
 	public Task<OneOf<GetFileQueryResult, BusinessError>> GetFileById(GetFileQuery query, CancellationToken cancellationToken);
 
+	public Task<OneOf<GetPureFileQueryResult, BusinessError>> GetPureFileById(GetPureFileQuery query, CancellationToken cancellationToken);
+	
 	/// <summary>
 	/// Создание файла 
 	/// </summary>

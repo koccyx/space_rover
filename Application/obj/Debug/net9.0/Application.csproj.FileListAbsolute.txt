@@ -83,3 +83,5 @@
 /Users/koccyx/Desktop/me/space_rover/space_rovers/Application/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
 /Users/koccyx/Desktop/me/space_rover/space_rovers/Application/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
 /Users/koccyx/Desktop/me/space_rover/space_rovers/Application/obj/Debug/net9.0/Application.sourcelink.json
+/Users/koccyx/Desktop/me/space_rover/space_rovers/Application/bin/Debug/net9.0/AWSSDK.Core.dll
+/Users/koccyx/Desktop/me/space_rover/space_rovers/Application/bin/Debug/net9.0/AWSSDK.S3.dll

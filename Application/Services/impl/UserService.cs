@@ -158,7 +158,7 @@ public sealed class UserService : IUserService
 	
 	public async Task<OneOf<LoginUserQueryResult, BusinessError>> LoginUser(LoginUserQuery query, CancellationToken cancellationToken)
 	{
-		var existingUser = await _db.Users.SingleOrDefaultAsync(x => x.Name == query.Name);
+		var existingUser = await _db.Users.SingleOrDefaultAsync(x => x.Name == query.Name, cancellationToken: cancellationToken);
 
 		if (existingUser is null)
 		{
